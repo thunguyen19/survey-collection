@@ -109,43 +109,105 @@ survey-collection/
 - Docker & Docker Compose
 - Node.js 18+
 - Python 3.11+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
+- Git
 
 ### Quick Start
 
-1. **Clone and setup the project:**
+#### Option 1: Full Docker Setup (Recommended for Quick Testing)
+
+1. **Clone the repository:**
 ```bash
 git clone <your-repo-url>
 cd survey-collection
 ```
 
-2. **Start the development environment:**
+2. **Start everything with Docker:**
 ```bash
-# Start database and backend
-docker-compose up -d
-
-# Install frontend dependencies and start dev server
-cd frontend
-npm install
-npm run dev
+# Start all services (database, backend, frontend)
+docker compose watch
 ```
 
 3. **Access the application:**
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:5173
 - Backend API: http://localhost:8000
 - API Documentation: http://localhost:8000/docs
-- Database: PostgreSQL on localhost:5432
+- Database Admin (Adminer): http://localhost:8080
+- Traefik Dashboard: http://localhost:8090
+
+**Note:** First startup may take 2-3 minutes while services initialize.
+
+#### Option 2: Local Development Setup (Recommended for Development)
+
+1. **Clone and setup environment:**
+```bash
+git clone <your-repo-url>
+cd survey-collection
+
+# Create environment file (if .env.example doesn't exist, create .env manually)
+cp .env.example .env || echo "Create .env file with database settings (see troubleshooting section)"
+```
+
+2. **Setup Python backend:**
+```bash
+# Install dependencies with uv (creates venv automatically)
+cd backend
+uv sync
+cd ..
+```
+
+3. **Setup frontend:**
+```bash
+cd frontend
+npm install
+cd ..
+```
+
+4. **Start services separately:**
+```bash
+# Terminal 1: Start the application
+docker compose up
+
+# Terminal 2: Start backend (uv automatically activates venv)
+cd backend
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+# Terminal 3: Start frontend
+cd frontend
+npm run dev
+```
+
+5. **Access the application:**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+- API Documentation: http://localhost:8000/docs
 
 ### Development Workflow
 
 **Backend Development:**
 ```bash
 cd backend
-# Install dependencies
-pip install -e .
+
 # Run database migrations
-alembic upgrade head
+uv run alembic upgrade head
+
 # Start development server
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+# Run tests
+uv run pytest
+
+# Add new dependencies
+uv add package-name
+
+# Add development dependencies
+uv add --dev package-name
+```
+
+**Alternative: Run backend with Docker (no uv needed):**
+```bash
+# Start backend with database
+docker compose up -d
 ```
 
 **Frontend Development:**
@@ -157,6 +219,143 @@ npm run dev
 npm test
 # Build for production
 npm run build
+```
+
+### Python Dependency Management with uv
+
+**Why use uv?**
+- **Fast**: 10-100x faster than pip for dependency resolution and installation
+- **Reliable**: Consistent dependency resolution with lockfile support
+- **Simple**: Automatic virtual environment management
+- **Compatible**: Drop-in replacement for pip and pip-tools
+
+**Managing Dependencies:**
+```bash
+cd backend
+
+# Install all dependencies (creates .venv automatically)
+uv sync
+
+# Add new runtime dependency
+uv add fastapi
+
+# Add new development dependency
+uv add --dev pytest
+
+# Remove dependency
+uv remove package-name
+
+# Update dependencies
+uv sync --upgrade
+
+# Run commands in the virtual environment
+uv run python script.py
+uv run pytest
+uv run alembic upgrade head
+```
+
+**uv Tips:**
+- Virtual environment is created automatically in `.venv/`
+- No need to manually activate/deactivate - `uv run` handles it
+- `uv.lock` file ensures reproducible installs across environments
+- Use `uv sync` after pulling changes to update dependencies
+- Add `.venv/` to `.gitignore` (already included)
+
+### Troubleshooting
+
+**"Address already in use" Error:**
+```bash
+# Check what's running on port 8000
+lsof -i :8000
+
+# Kill process using port 8000 (replace PID with actual process ID)
+kill -9 <PID>
+
+# Or stop all Docker containers
+docker compose down
+
+# Then restart your development server
+```
+
+**Database Connection Issues:**
+```bash
+# Ensure PostgreSQL is running
+docker compose up -d db
+
+# Check database logs
+docker compose logs db
+
+# Reset database (caution: deletes all data)
+docker compose down -v
+docker compose up -d db
+```
+
+**Environment Variables Missing:**
+```bash
+# If you see environment variable errors, create .env file manually
+cat > .env << 'EOF'
+# Basic configuration for local development
+DOMAIN=localhost
+FRONTEND_HOST=http://localhost:5173
+ENVIRONMENT=local
+SECRET_KEY=your-super-secret-key-change-this
+BACKEND_CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=survey_collection
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=changethis123
+FIRST_SUPERUSER=admin@example.com
+FIRST_SUPERUSER_PASSWORD=changethis123
+DOCKER_IMAGE_BACKEND=survey-collection-backend
+DOCKER_IMAGE_FRONTEND=survey-collection-frontend
+TAG=latest
+STACK_NAME=survey-collection
+EOF
+```
+
+**Frontend Not Starting:**
+```bash
+# Clear npm cache and reinstall
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
+```
+
+**uv Build Errors (httptools, uvloop on macOS):**
+```bash
+# Option 1: Install build dependencies
+brew install python-setuptools
+
+# Option 2: Use pre-built wheels (if available)
+cd backend
+uv sync --no-build
+
+# Option 3: Skip problematic packages temporarily
+cd backend
+uv sync --no-build-isolation
+
+# Option 4: For Apple Silicon Macs, ensure correct architecture
+export ARCHFLAGS="-arch arm64"  # For M1/M2 Macs
+# or
+export ARCHFLAGS="-arch x86_64"  # For Intel Macs
+uv sync
+
+# Option 5: Use system Python if homebrew Python causes issues
+uv sync --python $(which python3)
+```
+
+**Python Version Issues:**
+```bash
+# Check Python version (should be 3.10-3.12 for best compatibility)
+python --version
+
+# Use specific Python version with uv
+uv sync --python 3.11
+
+# If using Python 3.13, some packages might not have wheels yet
+# Consider using Python 3.11 or 3.12 instead
 ```
 
 ## 📊 Data Model
@@ -185,7 +384,11 @@ See [design/data-model.md](design/data-model.md) for detailed entity relationshi
 ```bash
 # Backend tests
 cd backend
-pytest
+uv run pytest
+
+# Backend tests with coverage
+uv run coverage run -m pytest
+uv run coverage report
 
 # Frontend tests
 cd frontend
@@ -218,11 +421,3 @@ npm run test:e2e
 - Redis caching layer for improved performance
 - Read replicas for analytics queries
 - Microservices architecture for large-scale deployments
-
-## 📄 License
-
-[Add your license information here]
-
-## 🤝 Contributing
-
-[Add contribution guidelines here]
