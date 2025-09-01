@@ -25,7 +25,6 @@ class ItemUpdate(SQLModel):
 
 class Item(ItemBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    title: str = Field(max_length=255)
     owner_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
 
     # Relationship
@@ -144,7 +143,6 @@ class UserBase(SQLModel):
 class UserCreate(UserBase):
     organization_id: uuid.UUID
     password: str = Field(min_length=8, max_length=40)
-    phone_number: Optional[str] = Field(default=None, max_length=20)
     permissions: Optional[dict] = Field(default_factory=dict)
 
 
@@ -188,16 +186,15 @@ class UpdatePassword(SQLModel):
 
 class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    organization_id: uuid.UUID = Field(foreign_key="organization.id", nullable=False)
+    organization_id: uuid.UUID | None = Field(default=None, foreign_key="organization.id")
     hashed_password: str
-    phone_number_encrypted: Optional[bytes] = Field(default=None, sa_column=Column(LargeBinary))
     last_login: Optional[datetime] = None
     permissions: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     
     # Relationships
-    organization: Organization = Relationship(back_populates="users")
+    organization: Optional[Organization] = Relationship(back_populates="users")
     patient_appointments: List["Appointment"] = Relationship(
         back_populates="patient",
         sa_relationship_kwargs={"foreign_keys": "[Appointment.patient_id]"}
@@ -212,7 +209,7 @@ class User(UserBase, table=True):
 
 class UserPublic(UserBase):
     id: uuid.UUID
-    organization_id: uuid.UUID
+    organization_id: Optional[uuid.UUID]
     last_login: Optional[datetime]
     created_at: datetime
     updated_at: datetime
@@ -230,7 +227,8 @@ class AppointmentBase(SQLModel):
     appointment_type: Optional[str] = Field(default=None, max_length=100)
     chief_complaint: Optional[str] = None
     visit_duration_minutes: Optional[int] = None
-    status: AppointmentStatus = Field(default=AppointmentStatus.SCHEDULED)
+    status: Optional[str] = Field(default=None, max_length=100)
+    # status: AppointmentStatus = Field(default=AppointmentStatus.SCHEDULED)
 
 
 class AppointmentCreate(AppointmentBase):
@@ -247,7 +245,7 @@ class AppointmentUpdate(SQLModel):
     diagnosis_descriptions: Optional[List[str]] = None
     chief_complaint: Optional[str] = None
     visit_duration_minutes: Optional[int] = None
-    status: Optional[AppointmentStatus] = None
+    status: Optional[str] = None
 
 
 class Appointment(AppointmentBase, table=True):
@@ -433,14 +431,14 @@ class FeedbackSession(FeedbackSessionBase, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
     # Relationships
-    appointment: Appointment = Relationship(back_populates="feedback_session")
+    appointment: Optional["Appointment"] = Relationship(back_populates="feedback_session")
     survey_template: SurveyTemplate = Relationship(back_populates="feedback_sessions")
     feedback_responses: List["FeedbackResponse"] = Relationship(back_populates="session", cascade_delete=True)
 
 
 class FeedbackSessionPublic(FeedbackSessionBase):
     id: uuid.UUID
-    appointment_id: uuid.UUID
+    appointment_id: Optional[uuid.UUID]
     survey_template_id: uuid.UUID
     completion_token: uuid.UUID
     initiated_at: datetime
@@ -521,3 +519,7 @@ class TokenPayload(SQLModel):
 class NewPassword(SQLModel):
     token: str
     new_password: str = Field(min_length=8, max_length=40)
+
+
+class Message(SQLModel):
+    message: str

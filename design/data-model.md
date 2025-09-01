@@ -21,7 +21,6 @@ erDiagram
         VARCHAR last_name
         VARCHAR middle_name
         VARCHAR email
-        BYTEA phone_number_encrypted
         VARCHAR external_id
         VARCHAR title
         VARCHAR specialty
@@ -167,7 +166,7 @@ Based on the updated data model, here's a summary of your survey collection appl
 
 **2. Users** *(Consolidated entity combining providers, patients, and admin users)*
 - Single unified user table with `user_type` field ('provider', 'patient', 'admin')
-- Universal fields: `first_name`, `last_name`, `middle_name`, `email`, `phone_number_encrypted`, `external_id`
+- Universal fields: `first_name`, `last_name`, `middle_name`, `email`, `external_id`
 - Provider-specific: `title`, `specialty`, `department`, `npi_number`
 - Patient-specific: `preferred_contact_method`, `language_preference`, `opt_out_status`, `opt_out_date`
 - Auth/Admin: `role`, `password_hash`, `last_login`, `permissions` (JSONB)
