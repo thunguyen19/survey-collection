@@ -4,6 +4,61 @@ import type { CancelablePromise } from "./core/CancelablePromise"
 import { OpenAPI } from "./core/OpenAPI"
 import { request as __request } from "./core/request"
 import type {
+  FeedbackResponsesReadFeedbackResponsesData,
+  FeedbackResponsesReadFeedbackResponsesResponse,
+  FeedbackResponsesCreateFeedbackResponseData,
+  FeedbackResponsesCreateFeedbackResponseResponse,
+  FeedbackResponsesCreateFeedbackResponsesBatchData,
+  FeedbackResponsesCreateFeedbackResponsesBatchResponse,
+  FeedbackResponsesReadResponsesBySessionData,
+  FeedbackResponsesReadResponsesBySessionResponse,
+  FeedbackResponsesReadFeedbackResponseData,
+  FeedbackResponsesReadFeedbackResponseResponse,
+  FeedbackResponsesUpdateFeedbackResponseData,
+  FeedbackResponsesUpdateFeedbackResponseResponse,
+  FeedbackResponsesDeleteFeedbackResponseData,
+  FeedbackResponsesDeleteFeedbackResponseResponse,
+  FeedbackResponsesGetQuestionAnalyticsData,
+  FeedbackResponsesGetQuestionAnalyticsResponse,
+  FeedbackResponseTypesReadFeedbackResponseTypesData,
+  FeedbackResponseTypesReadFeedbackResponseTypesResponse,
+  FeedbackResponseTypesCreateFeedbackResponseTypeData,
+  FeedbackResponseTypesCreateFeedbackResponseTypeResponse,
+  FeedbackResponseTypesReadAllFeedbackResponseTypesData,
+  FeedbackResponseTypesReadAllFeedbackResponseTypesResponse,
+  FeedbackResponseTypesReadFeedbackResponseTypeData,
+  FeedbackResponseTypesReadFeedbackResponseTypeResponse,
+  FeedbackResponseTypesUpdateFeedbackResponseTypeData,
+  FeedbackResponseTypesUpdateFeedbackResponseTypeResponse,
+  FeedbackResponseTypesDeleteFeedbackResponseTypeData,
+  FeedbackResponseTypesDeleteFeedbackResponseTypeResponse,
+  FeedbackResponseTypesReadFeedbackResponseTypeByNameData,
+  FeedbackResponseTypesReadFeedbackResponseTypeByNameResponse,
+  FeedbackResponseTypesReadFeedbackResponseTypesByCategoryData,
+  FeedbackResponseTypesReadFeedbackResponseTypesByCategoryResponse,
+  FeedbackResponseTypesActivateFeedbackResponseTypeData,
+  FeedbackResponseTypesActivateFeedbackResponseTypeResponse,
+  FeedbackResponseTypesDeactivateFeedbackResponseTypeData,
+  FeedbackResponseTypesDeactivateFeedbackResponseTypeResponse,
+  FeedbackSessionsReadFeedbackSessionsData,
+  FeedbackSessionsReadFeedbackSessionsResponse,
+  FeedbackSessionsCreateFeedbackSessionData,
+  FeedbackSessionsCreateFeedbackSessionResponse,
+  FeedbackSessionsReadFeedbackSessionByTokenData,
+  FeedbackSessionsReadFeedbackSessionByTokenResponse,
+  FeedbackSessionsUpdateFeedbackSessionByTokenData,
+  FeedbackSessionsUpdateFeedbackSessionByTokenResponse,
+  FeedbackSessionsReadFeedbackSessionData,
+  FeedbackSessionsReadFeedbackSessionResponse,
+  FeedbackSessionsUpdateFeedbackSessionData,
+  FeedbackSessionsUpdateFeedbackSessionResponse,
+  FeedbackSessionsDeleteFeedbackSessionData,
+  FeedbackSessionsDeleteFeedbackSessionResponse,
+  FeedbackSessionsCompleteFeedbackSessionData,
+  FeedbackSessionsCompleteFeedbackSessionResponse,
+  FeedbackSessionsCompleteFeedbackSessionByTokenData,
+  FeedbackSessionsCompleteFeedbackSessionByTokenResponse,
+  FeedbackSessionsGetOrganizationFeedbackStatsResponse,
   ItemsReadItemsData,
   ItemsReadItemsResponse,
   ItemsCreateItemData,
@@ -23,8 +78,37 @@ import type {
   LoginResetPasswordResponse,
   LoginRecoverPasswordHtmlContentData,
   LoginRecoverPasswordHtmlContentResponse,
+  OrganizationsReadOrganizationsData,
+  OrganizationsReadOrganizationsResponse,
+  OrganizationsCreateOrganizationData,
+  OrganizationsCreateOrganizationResponse,
+  OrganizationsReadMyOrganizationResponse,
+  OrganizationsReadOrganizationData,
+  OrganizationsReadOrganizationResponse,
+  OrganizationsUpdateOrganizationData,
+  OrganizationsUpdateOrganizationResponse,
+  OrganizationsDeleteOrganizationData,
+  OrganizationsDeleteOrganizationResponse,
   PrivateCreateUserData,
   PrivateCreateUserResponse,
+  SurveyTemplatesReadSurveyTemplatesData,
+  SurveyTemplatesReadSurveyTemplatesResponse,
+  SurveyTemplatesCreateSurveyTemplateData,
+  SurveyTemplatesCreateSurveyTemplateResponse,
+  SurveyTemplatesReadActiveSurveyTemplatesData,
+  SurveyTemplatesReadActiveSurveyTemplatesResponse,
+  SurveyTemplatesReadSurveyTemplateData,
+  SurveyTemplatesReadSurveyTemplateResponse,
+  SurveyTemplatesUpdateSurveyTemplateData,
+  SurveyTemplatesUpdateSurveyTemplateResponse,
+  SurveyTemplatesDeleteSurveyTemplateData,
+  SurveyTemplatesDeleteSurveyTemplateResponse,
+  SurveyTemplatesDuplicateSurveyTemplateData,
+  SurveyTemplatesDuplicateSurveyTemplateResponse,
+  SurveyTemplatesActivateSurveyTemplateData,
+  SurveyTemplatesActivateSurveyTemplateResponse,
+  SurveyTemplatesDeactivateSurveyTemplateData,
+  SurveyTemplatesDeactivateSurveyTemplateResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
   UsersCreateUserData,
@@ -47,6 +131,687 @@ import type {
   UtilsTestEmailResponse,
   UtilsHealthCheckResponse,
 } from "./types.gen"
+
+export class FeedbackResponsesService {
+  /**
+   * Read Feedback Responses
+   * Retrieve feedback responses for the current user's organization.
+   * Admins and providers can view responses.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns FeedbackResponsesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponses(
+    data: FeedbackResponsesReadFeedbackResponsesData = {},
+  ): CancelablePromise<FeedbackResponsesReadFeedbackResponsesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-responses/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Feedback Response
+   * Create new feedback response. This endpoint allows public access for survey respondents.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns FeedbackResponsePublic Successful Response
+   * @throws ApiError
+   */
+  public static createFeedbackResponse(
+    data: FeedbackResponsesCreateFeedbackResponseData,
+  ): CancelablePromise<FeedbackResponsesCreateFeedbackResponseResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/feedback-responses/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Feedback Responses Batch
+   * Create multiple feedback responses in a batch. Useful for submitting entire surveys.
+   * Public access for survey respondents.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns FeedbackResponsePublic Successful Response
+   * @throws ApiError
+   */
+  public static createFeedbackResponsesBatch(
+    data: FeedbackResponsesCreateFeedbackResponsesBatchData,
+  ): CancelablePromise<FeedbackResponsesCreateFeedbackResponsesBatchResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/feedback-responses/batch",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Responses By Session
+   * Get all responses for a specific feedback session.
+   * Admins and providers can view responses.
+   * @param data The data for the request.
+   * @param data.sessionId
+   * @param data.skip
+   * @param data.limit
+   * @returns FeedbackResponsesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readResponsesBySession(
+    data: FeedbackResponsesReadResponsesBySessionData,
+  ): CancelablePromise<FeedbackResponsesReadResponsesBySessionResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-responses/session/{session_id}",
+      path: {
+        session_id: data.sessionId,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Response
+   * Get feedback response by ID. Admins and providers can view responses.
+   * @param data The data for the request.
+   * @param data.responseId
+   * @returns FeedbackResponsePublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponse(
+    data: FeedbackResponsesReadFeedbackResponseData,
+  ): CancelablePromise<FeedbackResponsesReadFeedbackResponseResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-responses/{response_id}",
+      path: {
+        response_id: data.responseId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Feedback Response
+   * Update a feedback response. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.responseId
+   * @param data.requestBody
+   * @returns FeedbackResponsePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateFeedbackResponse(
+    data: FeedbackResponsesUpdateFeedbackResponseData,
+  ): CancelablePromise<FeedbackResponsesUpdateFeedbackResponseResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-responses/{response_id}",
+      path: {
+        response_id: data.responseId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Feedback Response
+   * Delete a feedback response. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.responseId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteFeedbackResponse(
+    data: FeedbackResponsesDeleteFeedbackResponseData,
+  ): CancelablePromise<FeedbackResponsesDeleteFeedbackResponseResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/feedback-responses/{response_id}",
+      path: {
+        response_id: data.responseId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Question Analytics
+   * Get analytics for a specific question across all responses in the organization.
+   * Admins and providers can view analytics.
+   * @param data The data for the request.
+   * @param data.questionId
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getQuestionAnalytics(
+    data: FeedbackResponsesGetQuestionAnalyticsData,
+  ): CancelablePromise<FeedbackResponsesGetQuestionAnalyticsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-responses/analytics/question/{question_id}",
+      path: {
+        question_id: data.questionId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class FeedbackResponseTypesService {
+  /**
+   * Read Feedback Response Types
+   * Retrieve feedback response types. All users can view available response types.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns FeedbackResponseTypesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponseTypes(
+    data: FeedbackResponseTypesReadFeedbackResponseTypesData = {},
+  ): CancelablePromise<FeedbackResponseTypesReadFeedbackResponseTypesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-response-types/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Feedback Response Type
+   * Create new feedback response type. Only superusers can create response types.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static createFeedbackResponseType(
+    data: FeedbackResponseTypesCreateFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesCreateFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/feedback-response-types/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read All Feedback Response Types
+   * Retrieve all feedback response types (including inactive ones if requested).
+   * Only admins can see inactive response types.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.includeInactive
+   * @returns FeedbackResponseTypesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readAllFeedbackResponseTypes(
+    data: FeedbackResponseTypesReadAllFeedbackResponseTypesData = {},
+  ): CancelablePromise<FeedbackResponseTypesReadAllFeedbackResponseTypesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-response-types/all",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        include_inactive: data.includeInactive,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Response Type
+   * Get feedback response type by ID.
+   * @param data The data for the request.
+   * @param data.responseTypeId
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponseType(
+    data: FeedbackResponseTypesReadFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesReadFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-response-types/{response_type_id}",
+      path: {
+        response_type_id: data.responseTypeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Feedback Response Type
+   * Update a feedback response type. Only superusers can update response types.
+   * @param data The data for the request.
+   * @param data.responseTypeId
+   * @param data.requestBody
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateFeedbackResponseType(
+    data: FeedbackResponseTypesUpdateFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesUpdateFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-response-types/{response_type_id}",
+      path: {
+        response_type_id: data.responseTypeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Feedback Response Type
+   * Delete a feedback response type. Only superusers can delete response types.
+   * This will fail if there are existing feedback responses using this type.
+   * @param data The data for the request.
+   * @param data.responseTypeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteFeedbackResponseType(
+    data: FeedbackResponseTypesDeleteFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesDeleteFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/feedback-response-types/{response_type_id}",
+      path: {
+        response_type_id: data.responseTypeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Response Type By Name
+   * Get feedback response type by name.
+   * @param data The data for the request.
+   * @param data.typeName
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponseTypeByName(
+    data: FeedbackResponseTypesReadFeedbackResponseTypeByNameData,
+  ): CancelablePromise<FeedbackResponseTypesReadFeedbackResponseTypeByNameResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-response-types/by-name/{type_name}",
+      path: {
+        type_name: data.typeName,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Response Types By Category
+   * Get feedback response types by category.
+   * @param data The data for the request.
+   * @param data.category
+   * @param data.skip
+   * @param data.limit
+   * @returns FeedbackResponseTypesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackResponseTypesByCategory(
+    data: FeedbackResponseTypesReadFeedbackResponseTypesByCategoryData,
+  ): CancelablePromise<FeedbackResponseTypesReadFeedbackResponseTypesByCategoryResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-response-types/by-category/{category}",
+      path: {
+        category: data.category,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Activate Feedback Response Type
+   * Activate a feedback response type.
+   * @param data The data for the request.
+   * @param data.responseTypeId
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static activateFeedbackResponseType(
+    data: FeedbackResponseTypesActivateFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesActivateFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-response-types/{response_type_id}/activate",
+      path: {
+        response_type_id: data.responseTypeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Deactivate Feedback Response Type
+   * Deactivate a feedback response type.
+   * @param data The data for the request.
+   * @param data.responseTypeId
+   * @returns FeedbackResponseTypePublic Successful Response
+   * @throws ApiError
+   */
+  public static deactivateFeedbackResponseType(
+    data: FeedbackResponseTypesDeactivateFeedbackResponseTypeData,
+  ): CancelablePromise<FeedbackResponseTypesDeactivateFeedbackResponseTypeResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-response-types/{response_type_id}/deactivate",
+      path: {
+        response_type_id: data.responseTypeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class FeedbackSessionsService {
+  /**
+   * Read Feedback Sessions
+   * Retrieve feedback sessions for the current user's organization.
+   * Admins and providers can view sessions.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns FeedbackSessionsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackSessions(
+    data: FeedbackSessionsReadFeedbackSessionsData = {},
+  ): CancelablePromise<FeedbackSessionsReadFeedbackSessionsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-sessions/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Feedback Session
+   * Create new feedback session. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static createFeedbackSession(
+    data: FeedbackSessionsCreateFeedbackSessionData,
+  ): CancelablePromise<FeedbackSessionsCreateFeedbackSessionResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/feedback-sessions/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Session By Token
+   * Get feedback session by completion token. This endpoint doesn't require authentication
+   * as it's used by survey respondents to access surveys via email/SMS links.
+   * @param data The data for the request.
+   * @param data.completionToken
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackSessionByToken(
+    data: FeedbackSessionsReadFeedbackSessionByTokenData,
+  ): CancelablePromise<FeedbackSessionsReadFeedbackSessionByTokenResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-sessions/by-token/{completion_token}",
+      path: {
+        completion_token: data.completionToken,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Feedback Session By Token
+   * Update a feedback session by completion token. This is used when survey respondents
+   * interact with surveys via email/SMS links.
+   * @param data The data for the request.
+   * @param data.completionToken
+   * @param data.requestBody
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateFeedbackSessionByToken(
+    data: FeedbackSessionsUpdateFeedbackSessionByTokenData,
+  ): CancelablePromise<FeedbackSessionsUpdateFeedbackSessionByTokenResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-sessions/by-token/{completion_token}",
+      path: {
+        completion_token: data.completionToken,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Feedback Session
+   * Get feedback session by ID. Admins and providers can view sessions.
+   * @param data The data for the request.
+   * @param data.feedbackSessionId
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static readFeedbackSession(
+    data: FeedbackSessionsReadFeedbackSessionData,
+  ): CancelablePromise<FeedbackSessionsReadFeedbackSessionResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-sessions/{feedback_session_id}",
+      path: {
+        feedback_session_id: data.feedbackSessionId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Feedback Session
+   * Update a feedback session. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.feedbackSessionId
+   * @param data.requestBody
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateFeedbackSession(
+    data: FeedbackSessionsUpdateFeedbackSessionData,
+  ): CancelablePromise<FeedbackSessionsUpdateFeedbackSessionResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-sessions/{feedback_session_id}",
+      path: {
+        feedback_session_id: data.feedbackSessionId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Feedback Session
+   * Delete a feedback session. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.feedbackSessionId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteFeedbackSession(
+    data: FeedbackSessionsDeleteFeedbackSessionData,
+  ): CancelablePromise<FeedbackSessionsDeleteFeedbackSessionResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/feedback-sessions/{feedback_session_id}",
+      path: {
+        feedback_session_id: data.feedbackSessionId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Complete Feedback Session
+   * Mark a feedback session as completed. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.feedbackSessionId
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static completeFeedbackSession(
+    data: FeedbackSessionsCompleteFeedbackSessionData,
+  ): CancelablePromise<FeedbackSessionsCompleteFeedbackSessionResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-sessions/{feedback_session_id}/complete",
+      path: {
+        feedback_session_id: data.feedbackSessionId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Complete Feedback Session By Token
+   * Mark a feedback session as completed by completion token.
+   * This is used when survey respondents complete surveys via email/SMS links.
+   * @param data The data for the request.
+   * @param data.completionToken
+   * @returns FeedbackSessionPublic Successful Response
+   * @throws ApiError
+   */
+  public static completeFeedbackSessionByToken(
+    data: FeedbackSessionsCompleteFeedbackSessionByTokenData,
+  ): CancelablePromise<FeedbackSessionsCompleteFeedbackSessionByTokenResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/feedback-sessions/by-token/{completion_token}/complete",
+      path: {
+        completion_token: data.completionToken,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Organization Feedback Stats
+   * Get feedback session statistics for the current user's organization.
+   * Admins and providers can view statistics.
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getOrganizationFeedbackStats(): CancelablePromise<FeedbackSessionsGetOrganizationFeedbackStatsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/feedback-sessions/stats/organization",
+    })
+  }
+}
 
 export class ItemsService {
   /**
@@ -274,6 +1039,141 @@ export class LoginService {
   }
 }
 
+export class OrganizationsService {
+  /**
+   * Read Organizations
+   * Retrieve organizations. Only superusers can access this.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns OrganizationsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readOrganizations(
+    data: OrganizationsReadOrganizationsData = {},
+  ): CancelablePromise<OrganizationsReadOrganizationsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/organizations/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Organization
+   * Create new organization. Only superusers can create organizations.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns OrganizationPublic Successful Response
+   * @throws ApiError
+   */
+  public static createOrganization(
+    data: OrganizationsCreateOrganizationData,
+  ): CancelablePromise<OrganizationsCreateOrganizationResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/organizations/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read My Organization
+   * Get current user's organization.
+   * @returns OrganizationPublic Successful Response
+   * @throws ApiError
+   */
+  public static readMyOrganization(): CancelablePromise<OrganizationsReadMyOrganizationResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/organizations/me",
+    })
+  }
+
+  /**
+   * Read Organization
+   * Get organization by ID. Users can only access their own organization unless they're superusers.
+   * @param data The data for the request.
+   * @param data.organizationId
+   * @returns OrganizationPublic Successful Response
+   * @throws ApiError
+   */
+  public static readOrganization(
+    data: OrganizationsReadOrganizationData,
+  ): CancelablePromise<OrganizationsReadOrganizationResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/organizations/{organization_id}",
+      path: {
+        organization_id: data.organizationId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Organization
+   * Update an organization. Only superusers can update organizations.
+   * @param data The data for the request.
+   * @param data.organizationId
+   * @param data.requestBody
+   * @returns OrganizationPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateOrganization(
+    data: OrganizationsUpdateOrganizationData,
+  ): CancelablePromise<OrganizationsUpdateOrganizationResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/organizations/{organization_id}",
+      path: {
+        organization_id: data.organizationId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Organization
+   * Delete an organization. Only superusers can delete organizations.
+   * This will cascade delete all related data (users, surveys, etc.).
+   * @param data The data for the request.
+   * @param data.organizationId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteOrganization(
+    data: OrganizationsDeleteOrganizationData,
+  ): CancelablePromise<OrganizationsDeleteOrganizationResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/organizations/{organization_id}",
+      path: {
+        organization_id: data.organizationId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
 export class PrivateService {
   /**
    * Create User
@@ -291,6 +1191,223 @@ export class PrivateService {
       url: "/api/v1/private/users/",
       body: data.requestBody,
       mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class SurveyTemplatesService {
+  /**
+   * Read Survey Templates
+   * Retrieve survey templates for the current user's organization.
+   * Admins and providers can view templates.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns SurveyTemplatesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readSurveyTemplates(
+    data: SurveyTemplatesReadSurveyTemplatesData = {},
+  ): CancelablePromise<SurveyTemplatesReadSurveyTemplatesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/survey-templates/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Survey Template
+   * Create new survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static createSurveyTemplate(
+    data: SurveyTemplatesCreateSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesCreateSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/survey-templates/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Active Survey Templates
+   * Retrieve only active survey templates for the current user's organization.
+   * Admins and providers can view active templates.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns SurveyTemplatesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readActiveSurveyTemplates(
+    data: SurveyTemplatesReadActiveSurveyTemplatesData = {},
+  ): CancelablePromise<SurveyTemplatesReadActiveSurveyTemplatesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/survey-templates/active",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Survey Template
+   * Get survey template by ID. Admins and providers can view templates.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static readSurveyTemplate(
+    data: SurveyTemplatesReadSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesReadSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/survey-templates/{survey_template_id}",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Survey Template
+   * Update a survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @param data.requestBody
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateSurveyTemplate(
+    data: SurveyTemplatesUpdateSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesUpdateSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/survey-templates/{survey_template_id}",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Survey Template
+   * Delete a survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteSurveyTemplate(
+    data: SurveyTemplatesDeleteSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesDeleteSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/survey-templates/{survey_template_id}",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Duplicate Survey Template
+   * Create a duplicate of an existing survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static duplicateSurveyTemplate(
+    data: SurveyTemplatesDuplicateSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesDuplicateSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/survey-templates/{survey_template_id}/duplicate",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Activate Survey Template
+   * Activate a survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static activateSurveyTemplate(
+    data: SurveyTemplatesActivateSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesActivateSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/survey-templates/{survey_template_id}/activate",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Deactivate Survey Template
+   * Deactivate a survey template. Admin access only for MVP.
+   * @param data The data for the request.
+   * @param data.surveyTemplateId
+   * @returns SurveyTemplatePublic Successful Response
+   * @throws ApiError
+   */
+  public static deactivateSurveyTemplate(
+    data: SurveyTemplatesDeactivateSurveyTemplateData,
+  ): CancelablePromise<SurveyTemplatesDeactivateSurveyTemplateResponse> {
+    return __request(OpenAPI, {
+      method: "PATCH",
+      url: "/api/v1/survey-templates/{survey_template_id}/deactivate",
+      path: {
+        survey_template_id: data.surveyTemplateId,
+      },
       errors: {
         422: "Validation Error",
       },

@@ -9,6 +9,150 @@ export type Body_login_login_access_token = {
   client_secret?: string | null
 }
 
+export type DeliveryMethod = "email" | "sms" | "phone" | "in_person"
+
+export type FeedbackResponseCreate = {
+  question_id: string
+  response_text?: string | null
+  response_time_seconds?: number | null
+  session_id: string
+  response_type_id: string
+  response_value?: {
+    [key: string]: unknown
+  }
+}
+
+export type FeedbackResponsePublic = {
+  question_id: string
+  response_text?: string | null
+  response_time_seconds?: number | null
+  id: string
+  session_id: string
+  response_type_id: string
+  response_value: {
+    [key: string]: unknown
+  }
+  ai_analysis: {
+    [key: string]: unknown
+  } | null
+  created_at: string
+}
+
+export type FeedbackResponsesPublic = {
+  data: Array<FeedbackResponsePublic>
+  count: number
+}
+
+export type FeedbackResponseTypeCreate = {
+  type_name: string
+  type_category?: string | null
+  description?: string | null
+  active?: boolean
+  validation_rules?: {
+    [key: string]: unknown
+  }
+  display_options?: {
+    [key: string]: unknown
+  }
+}
+
+export type FeedbackResponseTypePublic = {
+  type_name: string
+  type_category?: string | null
+  description?: string | null
+  active?: boolean
+  id: string
+  validation_rules: {
+    [key: string]: unknown
+  }
+  display_options: {
+    [key: string]: unknown
+  }
+  created_at: string
+  updated_at: string
+}
+
+export type FeedbackResponseTypesPublic = {
+  data: Array<FeedbackResponseTypePublic>
+  count: number
+}
+
+export type FeedbackResponseTypeUpdate = {
+  type_name?: string | null
+  type_category?: string | null
+  description?: string | null
+  validation_rules?: {
+    [key: string]: unknown
+  } | null
+  display_options?: {
+    [key: string]: unknown
+  } | null
+  active?: boolean | null
+}
+
+export type FeedbackResponseUpdate = {
+  response_value?: {
+    [key: string]: unknown
+  } | null
+  response_text?: string | null
+  ai_analysis?: {
+    [key: string]: unknown
+  } | null
+  response_time_seconds?: number | null
+}
+
+export type FeedbackSessionCreate = {
+  status?: FeedbackSessionStatus
+  delivery_method?: DeliveryMethod | null
+  delivery_attempts?: number
+  appointment_id: string
+  survey_template_id: string
+  initiated_at?: string
+  expired_at?: string | null
+}
+
+export type FeedbackSessionPublic = {
+  status?: FeedbackSessionStatus
+  delivery_method?: DeliveryMethod | null
+  delivery_attempts?: number
+  id: string
+  appointment_id: string
+  survey_template_id: string
+  completion_token: string
+  initiated_at: string
+  first_response_at: string | null
+  completed_at: string | null
+  expired_at: string | null
+  last_delivery_attempt: string | null
+  completion_time_seconds: number | null
+  created_at: string
+}
+
+export type FeedbackSessionsPublic = {
+  data: Array<FeedbackSessionPublic>
+  count: number
+}
+
+export type FeedbackSessionStatus =
+  | "initiated"
+  | "in_progress"
+  | "completed"
+  | "expired"
+  | "cancelled"
+
+export type FeedbackSessionUpdate = {
+  status?: FeedbackSessionStatus | null
+  first_response_at?: string | null
+  completed_at?: string | null
+  expired_at?: string | null
+  delivery_method?: DeliveryMethod | null
+  delivery_attempts?: number | null
+  last_delivery_attempt?: string | null
+  ip_address?: string | null
+  user_agent?: string | null
+  completion_time_seconds?: number | null
+}
+
 export type HTTPValidationError = {
   detail?: Array<ValidationError>
 }
@@ -44,11 +188,109 @@ export type NewPassword = {
   new_password: string
 }
 
+export type OrganizationCreate = {
+  name: string
+  type?: string | null
+  subscription_tier?: string | null
+  active?: boolean
+  settings?: {
+    [key: string]: unknown
+  } | null
+}
+
+export type OrganizationPublic = {
+  name: string
+  type?: string | null
+  subscription_tier?: string | null
+  active?: boolean
+  id: string
+  settings: {
+    [key: string]: unknown
+  } | null
+  created_at: string
+  updated_at: string
+}
+
+export type OrganizationsPublic = {
+  data: Array<OrganizationPublic>
+  count: number
+}
+
+export type OrganizationUpdate = {
+  name?: string | null
+  type?: string | null
+  settings?: {
+    [key: string]: unknown
+  } | null
+  subscription_tier?: string | null
+  active?: boolean | null
+}
+
 export type PrivateUserCreate = {
   email: string
   password: string
   full_name: string
   is_verified?: boolean
+}
+
+export type SurveyTemplateCreate = {
+  name: string
+  description?: string | null
+  active?: boolean
+  version?: number
+  organization_id: string
+  questions?: {
+    [key: string]: unknown
+  }
+  triggers?: {
+    [key: string]: unknown
+  }
+  delivery_settings?: {
+    [key: string]: unknown
+  }
+  created_by: string
+}
+
+export type SurveyTemplatePublic = {
+  name: string
+  description?: string | null
+  active?: boolean
+  version?: number
+  id: string
+  organization_id: string
+  questions: {
+    [key: string]: unknown
+  }
+  triggers: {
+    [key: string]: unknown
+  }
+  delivery_settings: {
+    [key: string]: unknown
+  }
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export type SurveyTemplatesPublic = {
+  data: Array<SurveyTemplatePublic>
+  count: number
+}
+
+export type SurveyTemplateUpdate = {
+  name?: string | null
+  description?: string | null
+  questions?: {
+    [key: string]: unknown
+  } | null
+  triggers?: {
+    [key: string]: unknown
+  } | null
+  delivery_settings?: {
+    [key: string]: unknown
+  } | null
+  active?: boolean | null
+  version?: number | null
 }
 
 export type Token = {
@@ -63,24 +305,60 @@ export type UpdatePassword = {
 
 export type UserCreate = {
   email: string
-  is_active?: boolean
-  is_superuser?: boolean
-  full_name?: string | null
+  user_type: UserType
+  first_name: string
+  last_name: string
+  middle_name?: string | null
+  external_id?: string | null
+  title?: string | null
+  specialty?: string | null
+  department?: string | null
+  npi_number?: string | null
+  preferred_contact_method?: string | null
+  language_preference?: string | null
+  opt_out_status?: boolean
+  opt_out_date?: string | null
+  role?: string | null
+  active?: boolean
+  organization_id: string
   password: string
+  phone_number?: string | null
+  permissions?: {
+    [key: string]: unknown
+  } | null
 }
 
 export type UserPublic = {
   email: string
-  is_active?: boolean
-  is_superuser?: boolean
-  full_name?: string | null
+  user_type: UserType
+  first_name: string
+  last_name: string
+  middle_name?: string | null
+  external_id?: string | null
+  title?: string | null
+  specialty?: string | null
+  department?: string | null
+  npi_number?: string | null
+  preferred_contact_method?: string | null
+  language_preference?: string | null
+  opt_out_status?: boolean
+  opt_out_date?: string | null
+  role?: string | null
+  active?: boolean
   id: string
+  organization_id: string
+  last_login: string | null
+  created_at: string
+  updated_at: string
 }
 
 export type UserRegister = {
+  organization_id: string
   email: string
   password: string
-  full_name?: string | null
+  user_type: UserType
+  first_name: string
+  last_name: string
 }
 
 export type UsersPublic = {
@@ -88,23 +366,241 @@ export type UsersPublic = {
   count: number
 }
 
+export type UserType = "provider" | "patient" | "admin"
+
 export type UserUpdate = {
   email?: string | null
-  is_active?: boolean
-  is_superuser?: boolean
-  full_name?: string | null
-  password?: string | null
+  first_name?: string | null
+  last_name?: string | null
+  middle_name?: string | null
+  title?: string | null
+  specialty?: string | null
+  department?: string | null
+  preferred_contact_method?: string | null
+  language_preference?: string | null
+  opt_out_status?: boolean | null
+  role?: string | null
+  active?: boolean | null
+  permissions?: {
+    [key: string]: unknown
+  } | null
 }
 
 export type UserUpdateMe = {
-  full_name?: string | null
+  first_name?: string | null
+  last_name?: string | null
   email?: string | null
+  preferred_contact_method?: string | null
+  language_preference?: string | null
 }
 
 export type ValidationError = {
   loc: Array<string | number>
   msg: string
   type: string
+}
+
+export type FeedbackResponsesReadFeedbackResponsesData = {
+  limit?: number
+  skip?: number
+}
+
+export type FeedbackResponsesReadFeedbackResponsesResponse =
+  FeedbackResponsesPublic
+
+export type FeedbackResponsesCreateFeedbackResponseData = {
+  requestBody: FeedbackResponseCreate
+}
+
+export type FeedbackResponsesCreateFeedbackResponseResponse =
+  FeedbackResponsePublic
+
+export type FeedbackResponsesCreateFeedbackResponsesBatchData = {
+  requestBody: Array<FeedbackResponseCreate>
+}
+
+export type FeedbackResponsesCreateFeedbackResponsesBatchResponse =
+  Array<FeedbackResponsePublic>
+
+export type FeedbackResponsesReadResponsesBySessionData = {
+  limit?: number
+  sessionId: string
+  skip?: number
+}
+
+export type FeedbackResponsesReadResponsesBySessionResponse =
+  FeedbackResponsesPublic
+
+export type FeedbackResponsesReadFeedbackResponseData = {
+  responseId: string
+}
+
+export type FeedbackResponsesReadFeedbackResponseResponse =
+  FeedbackResponsePublic
+
+export type FeedbackResponsesUpdateFeedbackResponseData = {
+  requestBody: FeedbackResponseUpdate
+  responseId: string
+}
+
+export type FeedbackResponsesUpdateFeedbackResponseResponse =
+  FeedbackResponsePublic
+
+export type FeedbackResponsesDeleteFeedbackResponseData = {
+  responseId: string
+}
+
+export type FeedbackResponsesDeleteFeedbackResponseResponse = Message
+
+export type FeedbackResponsesGetQuestionAnalyticsData = {
+  questionId: string
+}
+
+export type FeedbackResponsesGetQuestionAnalyticsResponse = {
+  [key: string]: unknown
+}
+
+export type FeedbackResponseTypesReadFeedbackResponseTypesData = {
+  limit?: number
+  skip?: number
+}
+
+export type FeedbackResponseTypesReadFeedbackResponseTypesResponse =
+  FeedbackResponseTypesPublic
+
+export type FeedbackResponseTypesCreateFeedbackResponseTypeData = {
+  requestBody: FeedbackResponseTypeCreate
+}
+
+export type FeedbackResponseTypesCreateFeedbackResponseTypeResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackResponseTypesReadAllFeedbackResponseTypesData = {
+  includeInactive?: boolean
+  limit?: number
+  skip?: number
+}
+
+export type FeedbackResponseTypesReadAllFeedbackResponseTypesResponse =
+  FeedbackResponseTypesPublic
+
+export type FeedbackResponseTypesReadFeedbackResponseTypeData = {
+  responseTypeId: string
+}
+
+export type FeedbackResponseTypesReadFeedbackResponseTypeResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackResponseTypesUpdateFeedbackResponseTypeData = {
+  requestBody: FeedbackResponseTypeUpdate
+  responseTypeId: string
+}
+
+export type FeedbackResponseTypesUpdateFeedbackResponseTypeResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackResponseTypesDeleteFeedbackResponseTypeData = {
+  responseTypeId: string
+}
+
+export type FeedbackResponseTypesDeleteFeedbackResponseTypeResponse = Message
+
+export type FeedbackResponseTypesReadFeedbackResponseTypeByNameData = {
+  typeName: string
+}
+
+export type FeedbackResponseTypesReadFeedbackResponseTypeByNameResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackResponseTypesReadFeedbackResponseTypesByCategoryData = {
+  category: string
+  limit?: number
+  skip?: number
+}
+
+export type FeedbackResponseTypesReadFeedbackResponseTypesByCategoryResponse =
+  FeedbackResponseTypesPublic
+
+export type FeedbackResponseTypesActivateFeedbackResponseTypeData = {
+  responseTypeId: string
+}
+
+export type FeedbackResponseTypesActivateFeedbackResponseTypeResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackResponseTypesDeactivateFeedbackResponseTypeData = {
+  responseTypeId: string
+}
+
+export type FeedbackResponseTypesDeactivateFeedbackResponseTypeResponse =
+  FeedbackResponseTypePublic
+
+export type FeedbackSessionsReadFeedbackSessionsData = {
+  limit?: number
+  skip?: number
+}
+
+export type FeedbackSessionsReadFeedbackSessionsResponse =
+  FeedbackSessionsPublic
+
+export type FeedbackSessionsCreateFeedbackSessionData = {
+  requestBody: FeedbackSessionCreate
+}
+
+export type FeedbackSessionsCreateFeedbackSessionResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsReadFeedbackSessionByTokenData = {
+  completionToken: string
+}
+
+export type FeedbackSessionsReadFeedbackSessionByTokenResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsUpdateFeedbackSessionByTokenData = {
+  completionToken: string
+  requestBody: FeedbackSessionUpdate
+}
+
+export type FeedbackSessionsUpdateFeedbackSessionByTokenResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsReadFeedbackSessionData = {
+  feedbackSessionId: string
+}
+
+export type FeedbackSessionsReadFeedbackSessionResponse = FeedbackSessionPublic
+
+export type FeedbackSessionsUpdateFeedbackSessionData = {
+  feedbackSessionId: string
+  requestBody: FeedbackSessionUpdate
+}
+
+export type FeedbackSessionsUpdateFeedbackSessionResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsDeleteFeedbackSessionData = {
+  feedbackSessionId: string
+}
+
+export type FeedbackSessionsDeleteFeedbackSessionResponse = Message
+
+export type FeedbackSessionsCompleteFeedbackSessionData = {
+  feedbackSessionId: string
+}
+
+export type FeedbackSessionsCompleteFeedbackSessionResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsCompleteFeedbackSessionByTokenData = {
+  completionToken: string
+}
+
+export type FeedbackSessionsCompleteFeedbackSessionByTokenResponse =
+  FeedbackSessionPublic
+
+export type FeedbackSessionsGetOrganizationFeedbackStatsResponse = {
+  [key: string]: unknown
 }
 
 export type ItemsReadItemsData = {
@@ -165,11 +661,105 @@ export type LoginRecoverPasswordHtmlContentData = {
 
 export type LoginRecoverPasswordHtmlContentResponse = string
 
+export type OrganizationsReadOrganizationsData = {
+  limit?: number
+  skip?: number
+}
+
+export type OrganizationsReadOrganizationsResponse = OrganizationsPublic
+
+export type OrganizationsCreateOrganizationData = {
+  requestBody: OrganizationCreate
+}
+
+export type OrganizationsCreateOrganizationResponse = OrganizationPublic
+
+export type OrganizationsReadMyOrganizationResponse = OrganizationPublic
+
+export type OrganizationsReadOrganizationData = {
+  organizationId: string
+}
+
+export type OrganizationsReadOrganizationResponse = OrganizationPublic
+
+export type OrganizationsUpdateOrganizationData = {
+  organizationId: string
+  requestBody: OrganizationUpdate
+}
+
+export type OrganizationsUpdateOrganizationResponse = OrganizationPublic
+
+export type OrganizationsDeleteOrganizationData = {
+  organizationId: string
+}
+
+export type OrganizationsDeleteOrganizationResponse = Message
+
 export type PrivateCreateUserData = {
   requestBody: PrivateUserCreate
 }
 
 export type PrivateCreateUserResponse = UserPublic
+
+export type SurveyTemplatesReadSurveyTemplatesData = {
+  limit?: number
+  skip?: number
+}
+
+export type SurveyTemplatesReadSurveyTemplatesResponse = SurveyTemplatesPublic
+
+export type SurveyTemplatesCreateSurveyTemplateData = {
+  requestBody: SurveyTemplateCreate
+}
+
+export type SurveyTemplatesCreateSurveyTemplateResponse = SurveyTemplatePublic
+
+export type SurveyTemplatesReadActiveSurveyTemplatesData = {
+  limit?: number
+  skip?: number
+}
+
+export type SurveyTemplatesReadActiveSurveyTemplatesResponse =
+  SurveyTemplatesPublic
+
+export type SurveyTemplatesReadSurveyTemplateData = {
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesReadSurveyTemplateResponse = SurveyTemplatePublic
+
+export type SurveyTemplatesUpdateSurveyTemplateData = {
+  requestBody: SurveyTemplateUpdate
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesUpdateSurveyTemplateResponse = SurveyTemplatePublic
+
+export type SurveyTemplatesDeleteSurveyTemplateData = {
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesDeleteSurveyTemplateResponse = Message
+
+export type SurveyTemplatesDuplicateSurveyTemplateData = {
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesDuplicateSurveyTemplateResponse =
+  SurveyTemplatePublic
+
+export type SurveyTemplatesActivateSurveyTemplateData = {
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesActivateSurveyTemplateResponse = SurveyTemplatePublic
+
+export type SurveyTemplatesDeactivateSurveyTemplateData = {
+  surveyTemplateId: string
+}
+
+export type SurveyTemplatesDeactivateSurveyTemplateResponse =
+  SurveyTemplatePublic
 
 export type UsersReadUsersData = {
   limit?: number

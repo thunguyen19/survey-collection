@@ -1,4 +1,4 @@
-import { Container, Image, Input, Text } from "@chakra-ui/react"
+import { Container, Input, Text } from "@chakra-ui/react"
 import {
   Link as RouterLink,
   createFileRoute,
@@ -13,7 +13,6 @@ import { Field } from "@/components/ui/field"
 import { InputGroup } from "@/components/ui/input-group"
 import { PasswordInput } from "@/components/ui/password-input"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
-import Logo from "/assets/images/fastapi-logo.svg"
 import { emailPattern, passwordRules } from "../utils"
 
 export const Route = createFileRoute("/login")({
@@ -66,14 +65,7 @@ function Login() {
         gap={4}
         centerContent
       >
-        <Image
-          src={Logo}
-          alt="FastAPI logo"
-          height="auto"
-          maxW="2xs"
-          alignSelf="center"
-          mb={4}
-        />
+        <Text alignSelf="center" fontSize="2xl" fontWeight="bold" color="#006496">Feedback Collector App</Text>
         <Field
           invalid={!!errors.username}
           errorText={errors.username?.message || !!error}
@@ -103,12 +95,12 @@ function Login() {
         <Button variant="solid" type="submit" loading={isSubmitting} size="md">
           Log In
         </Button>
-        <Text>
+        {/* <Text>
           Don't have an account?{" "}
           <RouterLink to="/signup" className="main-link">
             Sign Up
           </RouterLink>
-        </Text>
+        </Text> */}
       </Container>
     </>
   )

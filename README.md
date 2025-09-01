@@ -1,239 +1,232 @@
-# Full Stack FastAPI Template
+# Survey Collection System
 
-<a href="https://github.com/fastapi/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/fastapi/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
-<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/fastapi/full-stack-fastapi-template.svg" alt="Coverage"></a>
+A multi-tenant healthcare application that collects patient feedback through configurable surveys after medical appointments. Built with React/TypeScript frontend and FastAPI backend.
 
-## Technology Stack and Features
+## 🏥 Business Overview
 
-- ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
-    - 🧰 [SQLModel](https://sqlmodel.tiangolo.com) for the Python SQL database interactions (ORM).
-    - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
-    - 💾 [PostgreSQL](https://www.postgresql.org) as the SQL database.
-- 🚀 [React](https://react.dev) for the frontend.
-    - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
-    - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
-    - 🤖 An automatically generated frontend client.
-    - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
-    - 🦇 Dark mode support.
-- 🐋 [Docker Compose](https://www.docker.com) for development and production.
-- 🔒 Secure password hashing by default.
-- 🔑 JWT (JSON Web Token) authentication.
-- 📫 Email based password recovery.
-- ✅ Tests with [Pytest](https://pytest.org).
-- 📞 [Traefik](https://traefik.io) as a reverse proxy / load balancer.
-- 🚢 Deployment instructions using Docker Compose, including how to set up a frontend Traefik proxy to handle automatic HTTPS certificates.
-- 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+This system enables healthcare organizations to systematically collect and analyze patient feedback following appointments. It provides a structured approach to patient experience measurement with role-based access for providers, patients, and administrators.
 
-### Dashboard Login
+### Target Users
+- **Healthcare Organizations**: Hospitals, clinics, and medical practices
+- **Healthcare Providers**: Doctors, nurses, and clinical staff
+- **Patients**: Individuals receiving medical care
+- **Administrators**: Quality improvement and patient experience teams
 
-[![API docs](img/login.png)](https://github.com/fastapi/full-stack-fastapi-template)
+## 🚀 Key Features (MVP)
 
-### Dashboard - Admin
+- **Multi-Tenant Architecture**: Support for multiple healthcare organizations
+- **Unified User Management**: Providers, patients, and admins in single user model
+- **Configurable Surveys**: JSONB-based survey templates with flexible question types
+- **Automated Survey Delivery**: Email and SMS notifications post-appointment
+- **Appointment Integration**: Ready for EHR system integration
+- **Secure Data Handling**: Encrypted PII fields and organization-scoped data
+- **Role-Based Access**: Different permissions for providers, patients, and admins
 
-[![API docs](img/dashboard.png)](https://github.com/fastapi/full-stack-fastapi-template)
+## 🏗️ Architecture
 
-### Dashboard - Create User
-
-[![API docs](img/dashboard-create.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Items
-
-[![API docs](img/dashboard-items.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - User Settings
-
-[![API docs](img/dashboard-user-settings.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Dark Mode
-
-[![API docs](img/dashboard-dark.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Interactive API Documentation
-
-[![API docs](img/docs.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-## How To Use It
-
-You can **just fork or clone** this repository and use it as is.
-
-✨ It just works. ✨
-
-### How to Use a Private Repository
-
-If you want to have a private repository, GitHub won't allow you to simply fork it as it doesn't allow changing the visibility of forks.
-
-But you can do the following:
-
-- Create a new GitHub repo, for example `my-full-stack`.
-- Clone this repository manually, set the name with the name of the project you want to use, for example `my-full-stack`:
-
-```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   React SPA     │◄──►│   FastAPI       │◄──►│   PostgreSQL    │
+│   (TypeScript)  │    │   Backend       │    │   Database      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │                        │
+                                ▼                        ▼
+                       ┌─────────────────┐    ┌─────────────────┐
+                       │   Notification  │    │   File Storage  │
+                       │   Services      │    │   (Local FS)    │
+                       └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌─────────────────┐
+                       │   EHR Systems   │
+                       │   (Future)      │
+                       └─────────────────┘
 ```
 
-- Enter into the new directory:
+## 📁 Project Structure
 
-```bash
-cd my-full-stack
+```
+survey-collection/
+├── frontend/                    # React/TypeScript application
+│   ├── src/
+│   │   ├── components/         # UI components
+│   │   ├── routes/            # Page routes
+│   │   ├── hooks/             # Custom React hooks
+│   │   └── client/            # Generated API client
+│   ├── tests/                 # Frontend tests
+│   └── package.json
+├── backend/                     # FastAPI application
+│   ├── app/
+│   │   ├── api/               # API routes
+│   │   ├── core/              # Configuration and security
+│   │   ├── models.py          # Database models
+│   │   └── crud.py            # Database operations
+│   ├── alembic/               # Database migrations
+│   ├── tests/                 # Backend tests
+│   └── pyproject.toml
+├── design/                      # Design documents
+│   ├── architecture.md        # System architecture
+│   └── data-model.md          # Database design
+├── scripts/                     # Utility scripts
+└── docker-compose.yml          # Local development setup
 ```
 
-- Set the new origin to your new repository, copy it from the GitHub interface, for example:
+## 🛠️ Technology Stack
+
+### Frontend
+- **React 18+** with TypeScript
+- **TanStack Router** for routing
+- **TanStack Query** for API state management
+- **Chakra UI** for component library
+- **React Hook Form** with Zod validation
+- **Vite** for build tooling
+
+### Backend
+- **FastAPI** with Python 3.11+
+- **SQLAlchemy 2.0** (async) with PostgreSQL
+- **Alembic** for database migrations
+- **Pydantic v2** for data validation
+- **JWT** authentication with refresh tokens
+- **FastAPI BackgroundTasks** for async operations
+
+### Database & Storage
+- **PostgreSQL 15+** for all application data:
+  - Organizations (multi-tenant container)
+  - Users (providers, patients, admins)
+  - Appointments and clinical data
+  - Survey templates and responses
+  - Feedback sessions and analytics
+- **Local filesystem** for file storage
+
+### Development & Deployment
+- **Docker & Docker Compose** for containerization
+- **pytest** for backend testing
+- **Vitest & Playwright** for frontend testing
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- 🐳 [Docker](https://www.docker.com/) and Docker Compose
+- 🐍 Python 3.10+
+- 📦 Node.js 18+ with npm
+- 🔧 [uv](https://docs.astral.sh/uv/) for Python package management (backend)
+- 🔧 [nvm](https://github.com/nvm-sh/nvm) for Node version management (frontend)
+
+### 🏃‍♂️ Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/your-org/feedback-collection.git
+   cd feedback-collection
+   ```
+
+2. **Start docker**
+
+   ```bash
+   docker compose up -d
+   ```
+
+3. **Run database migrations**
+
+   ```bash
+   docker compose exec backend alembic upgrade head
+   ```
+
+## 🛠️ Development
+
+### Backend Development
+
+   ```bash
+   cd backend
+   uv sync
+   source .venv/bin/activate
+   ```
+
+### Frontend Development
+
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+
+### 🔄 Database Migrations
+
+**Create a new migration** (after modifying models):
 
 ```bash
-git remote set-url origin git@github.com:octocat/my-full-stack.git
+docker compose exec backend alembic revision --autogenerate -m "Description of changes"
 ```
 
-- Add this repo as another "remote" to allow you to get updates later:
+**Apply migrations**:
 
 ```bash
-git remote add upstream git@github.com:fastapi/full-stack-fastapi-template.git
+docker compose exec backend alembic upgrade head
 ```
 
-- Push the code to your new repository:
+### 📝 API Client Generation
+
+When backend API changes, regenerate the frontend client:
 
 ```bash
-git push -u origin master
+# From project root
+./scripts/generate-client.sh
 ```
 
-### Update From the Original Template
-
-After cloning the repository, and after doing changes, you might want to get the latest changes from this original template.
-
-- Make sure you added the original repository as a remote, you can check it with:
+Or manually:
 
 ```bash
-git remote -v
-
-origin    git@github.com:octocat/my-full-stack.git (fetch)
-origin    git@github.com:octocat/my-full-stack.git (push)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (fetch)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (push)
+cd frontend
+npm run generate-client
 ```
 
-- Pull the latest changes without merging:
+## 📊 Data Model
 
-```bash
-git pull --no-commit upstream master
-```
+The system uses the following key entities:
 
-This will download the latest changes from this template without committing them, that way you can check everything is right before committing.
+- **Users**: With roles (doctor, patient, admin)
+- **Hospitals**: Healthcare facilities
+- **SurveyCampaigns**: Feedback campaigns per hospital
+- **Questions**: Survey questions with types (rating, yes/no, free_form)
+- **PatientVisits**: Records of patient visits
+- **QuestionResponses**: Patient feedback responses
 
-- If there are conflicts, solve them in your editor.
+See [patient-feedback-data-model.md](./patient-feedback-data-model.md) for detailed documentation.
 
-- Once you are done, commit the changes:
+## 🔐 Security
 
-```bash
-git merge --continue
-```
+### Environment Variables
 
-### Configure
-
-You can then update configs in the `.env` files to customize your configurations.
-
-Before deploying it, make sure you change at least the values for:
-
-- `SECRET_KEY`
-- `FIRST_SUPERUSER_PASSWORD`
-- `POSTGRES_PASSWORD`
-
-You can (and should) pass these as environment variables from secrets.
-
-Read the [deployment.md](./deployment.md) docs for more details.
-
-### Generate Secret Keys
-
-Some environment variables in the `.env` file have a default value of `changethis`.
-
-You have to change them with a secret key, to generate secret keys you can run the following command:
+**Generate secure keys**:
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-Copy the content and use that as password / secret key. And run that again to generate another secure key.
+**Critical variables to change**:
 
-## How To Use It - Alternative With Copier
+- `SECRET_KEY`
+- `FIRST_SUPERUSER_PASSWORD`
+- `POSTGRES_PASSWORD`
 
-This repository also supports generating a new project using [Copier](https://copier.readthedocs.io).
+### API Security
 
-It will copy all the files, ask you configuration questions, and update the `.env` files with your answers.
+- JWT-based authentication
+- Role-based access control (RBAC)
+- Secure password hashing (bcrypt)
+- CORS configuration
 
-### Install Copier
+## 📦 Deployment
 
-You can install Copier with:
+See [deployment.md](./deployment.md) for detailed deployment instructions.
 
-```bash
-pip install copier
-```
+### Quick Production Setup
 
-Or better, if you have [`pipx`](https://pipx.pypa.io/), you can run it with:
-
-```bash
-pipx install copier
-```
-
-**Note**: If you have `pipx`, installing copier is optional, you could run it directly.
-
-### Generate a Project With Copier
-
-Decide a name for your new project's directory, you will use it below. For example, `my-awesome-project`.
-
-Go to the directory that will be the parent of your project, and run the command with your project's name:
-
-```bash
-copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
-
-If you have `pipx` and you didn't install `copier`, you can run it directly:
-
-```bash
-pipx run copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
-
-**Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/fastapi/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
-
-### Input Variables
-
-Copier will ask you for some data, you might want to have at hand before generating the project.
-
-But don't worry, you can just update any of that in the `.env` files afterwards.
-
-The input variables, with their default values (some auto generated) are:
-
-- `project_name`: (default: `"FastAPI Project"`) The name of the project, shown to API users (in .env).
-- `stack_name`: (default: `"fastapi-project"`) The name of the stack used for Docker Compose labels and project name (no spaces, no periods) (in .env).
-- `secret_key`: (default: `"changethis"`) The secret key for the project, used for security, stored in .env, you can generate one with the method above.
-- `first_superuser`: (default: `"admin@example.com"`) The email of the first superuser (in .env).
-- `first_superuser_password`: (default: `"changethis"`) The password of the first superuser (in .env).
-- `smtp_host`: (default: "") The SMTP server host to send emails, you can set it later in .env.
-- `smtp_user`: (default: "") The SMTP server user to send emails, you can set it later in .env.
-- `smtp_password`: (default: "") The SMTP server password to send emails, you can set it later in .env.
-- `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
-- `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
-- `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
-
-## Backend Development
-
-Backend docs: [backend/README.md](./backend/README.md).
-
-## Frontend Development
-
-Frontend docs: [frontend/README.md](./frontend/README.md).
-
-## Deployment
-
-Deployment docs: [deployment.md](./deployment.md).
-
-## Development
-
-General development docs: [development.md](./development.md).
-
-This includes using Docker Compose, custom local domains, `.env` configurations, etc.
-
-## Release Notes
-
-Check the file [release-notes.md](./release-notes.md).
-
-## License
-
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+1. **Update `.env` for production**
+2. **Build and start services**:
+   ```bash
+   docker compose -f docker-compose.yml up -d
+   ```

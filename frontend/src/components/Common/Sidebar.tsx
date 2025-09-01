@@ -49,6 +49,9 @@ const Sidebar = () => {
           <DrawerBody>
             <Flex flexDir="column" justify="space-between">
               <Box>
+                <Text fontSize="lg" fontWeight="bold" mb={4} px={4} py={2}>
+                  Feedback Collector App
+                </Text>
                 <SidebarItems onClose={() => setOpen(false)} />
                 <Flex
                   as="button"
