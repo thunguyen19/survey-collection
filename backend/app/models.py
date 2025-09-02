@@ -25,7 +25,7 @@ class ItemUpdate(SQLModel):
 
 class Item(ItemBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    owner_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    owner_id: uuid.UUID = Field(foreign_key="users.id", nullable=False)
 
     # Relationship
     owner: "User" = Relationship(back_populates="items")
@@ -114,28 +114,10 @@ class OrganizationsPublic(SQLModel):
     count: int
 
 
-# User Models
+# User Models (unified for providers, patients, and admins)
 class UserBase(SQLModel):
     email: EmailStr = Field(unique=True, index=True, max_length=255)
-    user_type: UserType
-    first_name: str = Field(max_length=100)
-    last_name: str = Field(max_length=100)
-    middle_name: Optional[str] = Field(default=None, max_length=100)
-    external_id: Optional[str] = Field(default=None, max_length=255)
-    
-    # Provider-specific fields
-    title: Optional[str] = Field(default=None, max_length=100)
-    specialty: Optional[str] = Field(default=None, max_length=100)
-    department: Optional[str] = Field(default=None, max_length=100)
-    npi_number: Optional[str] = Field(default=None, max_length=20)
-    
-    # Patient-specific fields
-    preferred_contact_method: Optional[str] = Field(default=None, max_length=50)
-    language_preference: Optional[str] = Field(default="en", max_length=10)
-    opt_out_status: bool = Field(default=False)
-    opt_out_date: Optional[datetime] = None
-    
-    # Auth/Admin fields
+    full_name: Optional[str] = Field(max_length=255)
     role: Optional[str] = Field(default=None, max_length=50)
     active: bool = Field(default=True)
 
@@ -143,40 +125,26 @@ class UserBase(SQLModel):
 class UserCreate(UserBase):
     organization_id: uuid.UUID
     password: str = Field(min_length=8, max_length=40)
-    permissions: Optional[dict] = Field(default_factory=dict)
+    is_superuser: bool = False
 
 
 class UserRegister(SQLModel):
-    organization_id: uuid.UUID
     email: EmailStr = Field(max_length=255)
     password: str = Field(min_length=8, max_length=40)
-    user_type: UserType
-    first_name: str = Field(max_length=100)
-    last_name: str = Field(max_length=100)
+    full_name: str = Field(max_length=255)
 
 
 class UserUpdate(SQLModel):
     email: Optional[EmailStr] = Field(default=None, max_length=255)
-    first_name: Optional[str] = Field(default=None, max_length=100)
-    last_name: Optional[str] = Field(default=None, max_length=100)
-    middle_name: Optional[str] = Field(default=None, max_length=100)
-    title: Optional[str] = Field(default=None, max_length=100)
-    specialty: Optional[str] = Field(default=None, max_length=100)
-    department: Optional[str] = Field(default=None, max_length=100)
-    preferred_contact_method: Optional[str] = Field(default=None, max_length=50)
-    language_preference: Optional[str] = Field(default=None, max_length=10)
-    opt_out_status: Optional[bool] = None
+    full_name: Optional[str] = Field(default=None, max_length=255)
+    organization_id: Optional[uuid.UUID] = Field(default=None)
     role: Optional[str] = Field(default=None, max_length=50)
     active: Optional[bool] = None
-    permissions: Optional[dict] = None
 
 
 class UserUpdateMe(SQLModel):
-    first_name: Optional[str] = Field(default=None, max_length=100)
-    last_name: Optional[str] = Field(default=None, max_length=100)
     email: Optional[EmailStr] = Field(default=None, max_length=255)
-    preferred_contact_method: Optional[str] = Field(default=None, max_length=50)
-    language_preference: Optional[str] = Field(default=None, max_length=10)
+    full_name: Optional[str] = Field(default=None, max_length=255)
 
 
 class UpdatePassword(SQLModel):
@@ -185,11 +153,13 @@ class UpdatePassword(SQLModel):
 
 
 class User(UserBase, table=True):
+    __tablename__ = "users"
+    
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    organization_id: uuid.UUID | None = Field(default=None, foreign_key="organization.id")
+    organization_id: Optional[uuid.UUID] = Field(default=None, foreign_key="organization.id")
     hashed_password: str
+    is_superuser: bool = Field(default=False)
     last_login: Optional[datetime] = None
-    permissions: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     
@@ -210,6 +180,7 @@ class User(UserBase, table=True):
 class UserPublic(UserBase):
     id: uuid.UUID
     organization_id: Optional[uuid.UUID]
+    is_superuser: bool
     last_login: Optional[datetime]
     created_at: datetime
     updated_at: datetime
@@ -250,8 +221,8 @@ class AppointmentUpdate(SQLModel):
 
 class Appointment(AppointmentBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    patient_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
-    provider_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    patient_id: uuid.UUID = Field(foreign_key="users.id", nullable=False)
+    provider_id: uuid.UUID = Field(foreign_key="users.id", nullable=False)
     diagnosis_codes: Optional[List[str]] = Field(default_factory=list, sa_column=Column(ARRAY(String)))
     diagnosis_descriptions: Optional[List[str]] = Field(default_factory=list, sa_column=Column(ARRAY(Text)))
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -316,7 +287,7 @@ class SurveyTemplate(SurveyTemplateBase, table=True):
     questions: dict = Field(default_factory=dict, sa_column=Column(JSON))
     triggers: dict = Field(default_factory=dict, sa_column=Column(JSON))
     delivery_settings: dict = Field(default_factory=dict, sa_column=Column(JSON))
-    created_by: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    created_by: uuid.UUID = Field(foreign_key="users.id", nullable=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     

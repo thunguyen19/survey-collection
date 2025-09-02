@@ -8,51 +8,27 @@ erDiagram
         VARCHAR type
         JSONB settings
         VARCHAR subscription_tier
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
         BOOLEAN active
     }
 
     USERS {
         UUID id PK
         UUID organization_id FK
-        VARCHAR user_type
-        VARCHAR first_name
-        VARCHAR last_name
-        VARCHAR middle_name
+        VARCHAR full_name
         VARCHAR email
-        VARCHAR external_id
-        VARCHAR title
-        VARCHAR specialty
-        VARCHAR department
-        VARCHAR npi_number
-        VARCHAR preferred_contact_method
-        VARCHAR language_preference
-        BOOLEAN opt_out_status
-        TIMESTAMP opt_out_date
         VARCHAR role
         VARCHAR password_hash
-        TIMESTAMP last_login
-        JSONB permissions
         BOOLEAN active
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
     }
 
     APPOINTMENTS {
         UUID id PK
         UUID patient_id FK
         UUID provider_id FK
-        VARCHAR external_appointment_id
         TIMESTAMP appointment_date
         VARCHAR appointment_type
-        VARCHAR[] diagnosis_codes
-        TEXT[] diagnosis_descriptions
-        TEXT chief_complaint
         INTEGER visit_duration_minutes
         VARCHAR status
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
     }
 
     SURVEY_TEMPLATES {
@@ -61,13 +37,10 @@ erDiagram
         VARCHAR name
         TEXT description
         JSONB questions
-        JSONB triggers
         JSONB delivery_settings
         BOOLEAN active
         INTEGER version
         UUID created_by FK
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
     }
 
     FEEDBACK_SESSIONS {
@@ -81,10 +54,6 @@ erDiagram
         TIMESTAMP expired_at
         VARCHAR status
         VARCHAR delivery_method
-        INTEGER delivery_attempts
-        TIMESTAMP last_delivery_attempt
-        INET ip_address
-        TEXT user_agent
         INTEGER completion_time_seconds
         TIMESTAMP created_at
     }
@@ -97,8 +66,6 @@ erDiagram
         JSONB validation_rules
         JSONB display_options
         BOOLEAN active
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
     }
 
     FEEDBACK_RESPONSES {
@@ -145,7 +112,7 @@ erDiagram
     }
 
     USERS {
-        string type_constraint "user_type field: 'provider', 'patient', 'admin'"
+        string type_constraint "role field: 'provider', 'patient', 'admin'"
     }
 ```
 
@@ -165,8 +132,8 @@ Based on the updated data model, here's a summary of your survey collection appl
 - Acts as the root entity for data isolation
 
 **2. Users** *(Consolidated entity combining providers, patients, and admin users)*
-- Single unified user table with `user_type` field ('provider', 'patient', 'admin')
-- Universal fields: `first_name`, `last_name`, `middle_name`, `email`, `external_id`
+- Single unified user table with `role` field ('provider', 'patient', 'admin')
+- Universal fields: `full_name`, `email`, `external_id`
 - Provider-specific: `title`, `specialty`, `department`, `npi_number`
 - Patient-specific: `preferred_contact_method`, `language_preference`, `opt_out_status`, `opt_out_date`
 - Auth/Admin: `role`, `password_hash`, `last_login`, `permissions` (JSONB)

@@ -33,7 +33,7 @@ def login_access_token(
     )
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
-    elif not user.is_active:
+    elif not user.active:
         raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return Token(
@@ -89,7 +89,7 @@ def reset_password(session: SessionDep, body: NewPassword) -> Message:
             status_code=404,
             detail="The user with this email does not exist in the system.",
         )
-    elif not user.is_active:
+    elif not user.active:
         raise HTTPException(status_code=400, detail="Inactive user")
     hashed_password = get_password_hash(password=body.new_password)
     user.hashed_password = hashed_password
