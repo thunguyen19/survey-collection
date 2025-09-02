@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.routes import (
+    analytics,
     feedback_response_types,
     feedback_responses,
     feedback_sessions,
@@ -30,6 +31,9 @@ api_router.include_router(survey_templates.router)
 api_router.include_router(feedback_sessions.router)
 api_router.include_router(feedback_responses.router)
 api_router.include_router(feedback_response_types.router)
+
+# Analytics routes (admin-only for MVP)
+api_router.include_router(analytics.router)
 
 # Utility routes
 api_router.include_router(utils.router)
