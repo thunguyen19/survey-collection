@@ -53,7 +53,7 @@ def read_all_feedback_response_types(
     Retrieve all feedback response types (including inactive ones if requested).
     Only admins can see inactive response types.
     """
-    if include_inactive and current_user.user_type != UserType.ADMIN:
+    if include_inactive and not current_user.is_superuser and current_user.role != "admin":
         raise HTTPException(
             status_code=403, detail="Only admins can view inactive response types"
         )
@@ -114,7 +114,7 @@ def read_feedback_response_type(
         raise HTTPException(status_code=404, detail="Feedback response type not found")
     
     # Only show inactive response types to admins
-    if not response_type.active and current_user.user_type != UserType.ADMIN:
+    if not response_type.active and not current_user.is_superuser and current_user.role != "admin":
         raise HTTPException(status_code=404, detail="Feedback response type not found")
     
     return response_type
@@ -137,7 +137,7 @@ def read_feedback_response_type_by_name(
         raise HTTPException(status_code=404, detail="Feedback response type not found")
     
     # Only show inactive response types to admins
-    if not response_type.active and current_user.user_type != UserType.ADMIN:
+    if not response_type.active and not current_user.is_superuser and current_user.role != "admin":
         raise HTTPException(status_code=404, detail="Feedback response type not found")
     
     return response_type

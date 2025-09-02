@@ -116,12 +116,6 @@ erDiagram
     }
 ```
 
-I'll read the updated data model file to provide you with a current summary.
-
-[1 tool called]
-
-Based on the updated data model, here's a summary of your survey collection application's entities:
-
 ## Data Model Summary
 
 ### Core Entities

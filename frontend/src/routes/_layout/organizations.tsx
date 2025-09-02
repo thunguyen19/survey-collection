@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { type UserPublic } from "@/client"
 // TODO: OrganizationsService will be available after regenerating the API client
-import { OrganizationsService } from "@/client"
+import { OrganizationsService, UsersService } from "@/client"
 import AddOrganization from "@/components/Organizations/AddOrganization"
 import { OrganizationActionsMenu } from "@/components/Organizations/OrganizationActionsMenu"
 import PendingOrganizations from "@/components/Pending/PendingOrganizations"
@@ -149,20 +149,22 @@ function OrganizationsTable() {
 }
 
 function Organizations() {
-  const queryClient = useQueryClient()
-  const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
+  const { data: currentUser, isLoading } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => UsersService.readUserMe(),
+  })
 
   return (
     <Container maxW="full">
       <Heading size="lg" pt={12}>
         Organizations Management
       </Heading>
-      
-      {/* <Text color="orange.500" fontSize="sm" mb={4} p={3} bg="orange.50" borderRadius="md">
-        📝 Note: This page uses mock data. To connect to the real API, regenerate the API client after the backend organizations routes are deployed.
-      </Text> */}
 
-      {currentUser?.is_superuser && <AddOrganization />}
+      {isLoading ? (
+        <div>Loading user...</div> // or a spinner/skeleton
+      ) : currentUser?.is_superuser ? (
+        <AddOrganization />
+      ) : null}
       <OrganizationsTable />
     </Container>
   )

@@ -30,7 +30,7 @@ def read_feedback_sessions(
     Admins and providers can view sessions.
     """
     # Only allow admins and providers to view sessions
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view feedback sessions"
         )
@@ -116,7 +116,7 @@ def read_feedback_session(
     Get feedback session by ID. Admins and providers can view sessions.
     """
     # Only allow admins and providers to view sessions
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view feedback sessions"
         )
@@ -313,7 +313,7 @@ def get_organization_feedback_stats(
     Admins and providers can view statistics.
     """
     # Only allow admins and providers to view statistics
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view organization statistics"
         )

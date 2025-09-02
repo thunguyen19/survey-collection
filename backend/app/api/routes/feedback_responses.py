@@ -29,7 +29,7 @@ def read_feedback_responses(
     Admins and providers can view responses.
     """
     # Only allow admins and providers to view responses
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view feedback responses"
         )
@@ -160,7 +160,7 @@ def read_responses_by_session(
     Admins and providers can view responses.
     """
     # Only allow admins and providers to view responses
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view feedback responses"
         )
@@ -197,7 +197,7 @@ def read_feedback_response(
     Get feedback response by ID. Admins and providers can view responses.
     """
     # Only allow admins and providers to view responses
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view feedback responses"
         )
@@ -290,7 +290,7 @@ def get_question_analytics(
     Admins and providers can view analytics.
     """
     # Only allow admins and providers to view analytics
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view response analytics"
         )

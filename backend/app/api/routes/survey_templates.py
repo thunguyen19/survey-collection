@@ -12,7 +12,6 @@ from app.models import (
     SurveyTemplatePublic,
     SurveyTemplatesPublic,
     SurveyTemplateUpdate,
-    UserType,
 )
 
 router = APIRouter(prefix="/survey-templates", tags=["survey-templates"])
@@ -27,7 +26,7 @@ def read_survey_templates(
     Admins and providers can view templates.
     """
     # Only allow admins and providers to view templates
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view survey templates"
         )
@@ -60,6 +59,7 @@ def create_survey_template(
     """
     
     # Ensure the survey template is created for the user's organization
+    # Always override organization_id and created_by with current user's info
     survey_template_data = survey_template_in.model_dump()
     survey_template_data["organization_id"] = current_user.organization_id
     survey_template_data["created_by"] = current_user.id
@@ -80,7 +80,7 @@ def read_active_survey_templates(
     Admins and providers can view active templates.
     """
     # Only allow admins and providers to view templates
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view survey templates"
         )
@@ -112,7 +112,7 @@ def read_survey_template(
     Get survey template by ID. Admins and providers can view templates.
     """
     # Only allow admins and providers to view templates
-    if current_user.user_type not in [UserType.ADMIN, UserType.PROVIDER]:
+    if not current_user.is_superuser and current_user.role not in ["admin", "provider"]:
         raise HTTPException(
             status_code=403, detail="Only admins and providers can view survey templates"
         )
