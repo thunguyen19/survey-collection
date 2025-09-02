@@ -264,11 +264,11 @@ class SurveyTemplateBase(SQLModel):
 
 
 class SurveyTemplateCreate(SurveyTemplateBase):
-    organization_id: uuid.UUID
+    organization_id: Optional[uuid.UUID] = None
     questions: dict = Field(default_factory=dict)
     triggers: dict = Field(default_factory=dict)
     delivery_settings: dict = Field(default_factory=dict)
-    created_by: uuid.UUID
+    created_by: Optional[uuid.UUID] = None
 
 
 class SurveyTemplateUpdate(SQLModel):

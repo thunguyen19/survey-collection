@@ -145,8 +145,15 @@ def update_survey_template(
     if not survey_template:
         raise HTTPException(status_code=404, detail="Survey template not found")
     
-    if survey_template.organization_id != current_user.organization_id:
-        raise HTTPException(status_code=403, detail="Not enough permissions")
+    # Superusers can access any template, others can only access their organization's templates
+    if not current_user.is_superuser:
+        if not current_user.organization_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="User must be associated with an organization to update survey templates"
+            )
+        if survey_template.organization_id != current_user.organization_id:
+            raise HTTPException(status_code=403, detail="Not enough permissions")
     
     update_dict = survey_template_in.model_dump(exclude_unset=True)
     survey_template.sqlmodel_update(update_dict)
@@ -198,13 +205,14 @@ def duplicate_survey_template(
         raise HTTPException(status_code=403, detail="Not enough permissions")
     
     # Create a new template with copied data
+    # Use the original template's organization_id to maintain consistency
     template_data = {
         "name": f"{original_template.name} (Copy)",
         "description": original_template.description,
         "questions": original_template.questions,
         "triggers": original_template.triggers,
         "delivery_settings": original_template.delivery_settings,
-        "organization_id": current_user.organization_id,
+        "organization_id": original_template.organization_id,
         "created_by": current_user.id,
         "active": False,  # Start as inactive
         "version": 1,  # Reset version

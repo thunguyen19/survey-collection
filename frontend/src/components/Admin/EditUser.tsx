@@ -181,7 +181,7 @@ const EditUser = ({ user }: EditUserProps) => {
               />
               <Controller
                 control={control}
-                name="is_active"
+                name="active"
                 render={({ field }) => (
                   <Field disabled={field.disabled} colorPalette="teal">
                     <Checkbox
