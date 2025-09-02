@@ -85,7 +85,7 @@ function UsersTable() {
               <Table.Cell>
                 {user.is_superuser ? "Superuser" : "User"}
               </Table.Cell>
-              <Table.Cell>{user.is_active ? "Active" : "Inactive"}</Table.Cell>
+              <Table.Cell>{user.active ? "Active" : "Inactive"}</Table.Cell>
               <Table.Cell>
                 <UserActionsMenu
                   user={user}

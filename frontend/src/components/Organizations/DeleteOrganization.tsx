@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { FiTrash } from "react-icons/fi"
 
 // TODO: Import from client after regenerating API client
-// import { OrganizationsService } from "@/client"
+import { OrganizationsService } from "@/client"
 // import type { ApiError } from "@/client/core/ApiError"
 import useCustomToast from "@/hooks/useCustomToast"
 // import { handleError } from "@/utils"
@@ -37,17 +37,17 @@ const DeleteOrganization = ({ id, name }: DeleteOrganizationProps) => {
 
   const deleteOrganization = async (id: string) => {
     // TODO: Replace with actual API call after regenerating client
-    // await OrganizationsService.deleteOrganization({ organizationId: id })
+    await OrganizationsService.deleteOrganization({ organizationId: id })
     
     // Mock API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log("Mock: Deleting organization", id)
+    // await new Promise(resolve => setTimeout(resolve, 1000))
+    // console.log("Mock: Deleting organization", id)
   }
 
   const mutation = useMutation({
     mutationFn: deleteOrganization,
     onSuccess: () => {
-      showSuccessToast("Organization deleted successfully (Mock)")
+      showSuccessToast("Organization deleted successfully")
       setIsOpen(false)
       queryClient.invalidateQueries({
         queryKey: ["organizations"],
