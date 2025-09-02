@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiEdit } from "react-icons/fi"
 
 // TODO: Import from client after regenerating API client
-// import { type OrganizationPublic, type OrganizationUpdate, OrganizationsService } from "@/client"
+import { OrganizationsService } from "@/client"
 // import type { ApiError } from "@/client/core/ApiError"
 import useCustomToast from "@/hooks/useCustomToast"
 // import { handleError } from "@/utils"
@@ -77,10 +77,10 @@ const EditOrganization = ({ organization }: EditOrganizationProps) => {
   const mutation = useMutation({
     mutationFn: async (data: OrganizationUpdate) => {
       // TODO: Replace with actual API call after regenerating client
-      // return OrganizationsService.updateOrganization({
-      //   organizationId: organization.id,
-      //   requestBody: data,
-      // })
+      return OrganizationsService.updateOrganization({
+        organizationId: organization.id,
+        requestBody: data,
+      })
       
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 1000))

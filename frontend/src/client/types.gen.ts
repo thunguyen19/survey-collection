@@ -116,7 +116,7 @@ export type FeedbackSessionPublic = {
   delivery_method?: DeliveryMethod | null
   delivery_attempts?: number
   id: string
-  appointment_id: string
+  appointment_id: string | null
   survey_template_id: string
   completion_token: string
   initiated_at: string
@@ -305,60 +305,31 @@ export type UpdatePassword = {
 
 export type UserCreate = {
   email: string
-  user_type: UserType
-  first_name: string
-  last_name: string
-  middle_name?: string | null
-  external_id?: string | null
-  title?: string | null
-  specialty?: string | null
-  department?: string | null
-  npi_number?: string | null
-  preferred_contact_method?: string | null
-  language_preference?: string | null
-  opt_out_status?: boolean
-  opt_out_date?: string | null
+  full_name: string | null
   role?: string | null
   active?: boolean
   organization_id: string
   password: string
-  phone_number?: string | null
-  permissions?: {
-    [key: string]: unknown
-  } | null
+  is_superuser?: boolean
 }
 
 export type UserPublic = {
   email: string
-  user_type: UserType
-  first_name: string
-  last_name: string
-  middle_name?: string | null
-  external_id?: string | null
-  title?: string | null
-  specialty?: string | null
-  department?: string | null
-  npi_number?: string | null
-  preferred_contact_method?: string | null
-  language_preference?: string | null
-  opt_out_status?: boolean
-  opt_out_date?: string | null
+  full_name: string | null
   role?: string | null
   active?: boolean
   id: string
-  organization_id: string
+  organization_id: string | null
+  is_superuser: boolean
   last_login: string | null
   created_at: string
   updated_at: string
 }
 
 export type UserRegister = {
-  organization_id: string
   email: string
   password: string
-  user_type: UserType
-  first_name: string
-  last_name: string
+  full_name: string
 }
 
 export type UsersPublic = {
@@ -366,32 +337,17 @@ export type UsersPublic = {
   count: number
 }
 
-export type UserType = "provider" | "patient" | "admin"
-
 export type UserUpdate = {
   email?: string | null
-  first_name?: string | null
-  last_name?: string | null
-  middle_name?: string | null
-  title?: string | null
-  specialty?: string | null
-  department?: string | null
-  preferred_contact_method?: string | null
-  language_preference?: string | null
-  opt_out_status?: boolean | null
+  full_name?: string | null
+  organization_id?: string | null
   role?: string | null
   active?: boolean | null
-  permissions?: {
-    [key: string]: unknown
-  } | null
 }
 
 export type UserUpdateMe = {
-  first_name?: string | null
-  last_name?: string | null
   email?: string | null
-  preferred_contact_method?: string | null
-  language_preference?: string | null
+  full_name?: string | null
 }
 
 export type ValidationError = {

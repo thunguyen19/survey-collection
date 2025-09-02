@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { type UserPublic } from "@/client"
 // TODO: OrganizationsService will be available after regenerating the API client
-// import { OrganizationsService } from "@/client"
+import { OrganizationsService } from "@/client"
 import AddOrganization from "@/components/Organizations/AddOrganization"
 import { OrganizationActionsMenu } from "@/components/Organizations/OrganizationActionsMenu"
 import PendingOrganizations from "@/components/Pending/PendingOrganizations"
@@ -26,32 +26,32 @@ function getOrganizationsQueryOptions({ page }: { page: number }) {
   return {
     queryFn: async () => {
       // TODO: Replace with actual OrganizationsService call after regenerating API client
-      // return OrganizationsService.readOrganizations({ skip: (page - 1) * PER_PAGE, limit: PER_PAGE })
+      return OrganizationsService.readOrganizations({ skip: (page - 1) * PER_PAGE, limit: PER_PAGE })
       
       // Mock data for now
-      return {
-        data: [
-          {
-            id: "1",
-            name: "General Hospital",
-            type: "hospital",
-            subscription_tier: "premium",
-            active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-          {
-            id: "2", 
-            name: "City Clinic",
-            type: "clinic",
-            subscription_tier: "basic",
-            active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          }
-        ],
-        count: 2
-      }
+      // return {
+      //   data: [
+      //     {
+      //       id: "1",
+      //       name: "General Hospital",
+      //       type: "hospital",
+      //       subscription_tier: "premium",
+      //       active: true,
+      //       created_at: new Date().toISOString(),
+      //       updated_at: new Date().toISOString(),
+      //     },
+      //     {
+      //       id: "2", 
+      //       name: "City Clinic",
+      //       type: "clinic",
+      //       subscription_tier: "basic",
+      //       active: true,
+      //       created_at: new Date().toISOString(),
+      //       updated_at: new Date().toISOString(),
+      //     }
+      //   ],
+      //   count: 2
+      // }
     },
     queryKey: ["organizations", { page }],
   }
@@ -158,9 +158,9 @@ function Organizations() {
         Organizations Management
       </Heading>
       
-      <Text color="orange.500" fontSize="sm" mb={4} p={3} bg="orange.50" borderRadius="md">
+      {/* <Text color="orange.500" fontSize="sm" mb={4} p={3} bg="orange.50" borderRadius="md">
         📝 Note: This page uses mock data. To connect to the real API, regenerate the API client after the backend organizations routes are deployed.
-      </Text>
+      </Text> */}
 
       {currentUser?.is_superuser && <AddOrganization />}
       <OrganizationsTable />

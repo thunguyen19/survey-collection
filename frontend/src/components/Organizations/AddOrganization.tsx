@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { type SubmitHandler, useForm } from "react-hook-form"
 
 // TODO: Import from client after regenerating API client
-// import { type OrganizationCreate, OrganizationsService } from "@/client"
+import { OrganizationsService } from "@/client"
 // import type { ApiError } from "@/client/core/ApiError"
 import useCustomToast from "@/hooks/useCustomToast"
 // import { handleError } from "@/utils"
@@ -61,7 +61,7 @@ const AddOrganization = () => {
   const mutation = useMutation({
     mutationFn: async (data: OrganizationCreate) => {
       // TODO: Replace with actual API call after regenerating client
-      // return OrganizationsService.createOrganization({ requestBody: data })
+      return OrganizationsService.createOrganization({ requestBody: data })
       
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 1000))
