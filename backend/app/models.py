@@ -269,6 +269,8 @@ class SurveyTemplateCreate(SurveyTemplateBase):
     triggers: dict = Field(default_factory=dict)
     delivery_settings: dict = Field(default_factory=dict)
     created_by: Optional[uuid.UUID] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 class SurveyTemplateUpdate(SQLModel):
@@ -279,7 +281,7 @@ class SurveyTemplateUpdate(SQLModel):
     delivery_settings: Optional[dict] = None
     active: Optional[bool] = None
     version: Optional[int] = None
-
+    updated_at: Optional[datetime] = None
 
 class SurveyTemplate(SurveyTemplateBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
